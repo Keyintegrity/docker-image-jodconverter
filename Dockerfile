@@ -2,12 +2,17 @@
 # we cannot use the official image since we then cannot have sid and the glibc fix
 #FROM openjdk:11.0-jre-slim-stretch as jodconverter-base
 FROM debian:sid as jodconverter-base
+
 # backports would only be needed for stretch
 #RUN echo "deb http://ftp2.de.debian.org/debian stretch-backports main contrib non-free" > /etc/apt/sources.list.d/debian-backports.list
+
+RUN echo "deb http://ftp.us.debian.org/debian/ sid main contrib non-free" >> /etc/apt/sources.list
+
 RUN apt-get update && apt-get -y install \
         openjdk-11-jre \
         apt-transport-https locales-all libpng16-16 libxinerama1 libgl1-mesa-glx libfontconfig1 libfreetype6 libxrender1 \
         libxcb-shm0 libxcb-render0 adduser cpio findutils \
+        ttf-mscorefonts-installer \
         # procps needed for us finding the libreoffice process, see https://github.com/sbraconnier/jodconverter/issues/127#issuecomment-463668183
         procps \
     # only for stretch
